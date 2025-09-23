@@ -1,0 +1,1 @@
+int getPrime(long long, long long*);
