@@ -4,7 +4,7 @@
 #include "../include/Status.h"
 
 bool prime(long long num) {
-    for(int i = 2; i * i <= num; i++) {
+    for(int i = 2; i * i <= num; ++i) {
         if(num % i == 0) {
             return false;
         }

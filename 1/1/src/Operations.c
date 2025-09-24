@@ -22,7 +22,7 @@ int pOp(long long x) {
     if(x <= 1) {
         return InvalidInput;
     }
-    for(long long i = 2; i * i <= x; i++) {
+    for(long long i = 2; i * i <= x; ++i) {
         if(x % i == 0) {
             printf("Число является составным\n");
             return Succes;
@@ -62,10 +62,10 @@ int eOp(long long x) {
         return InvalidInput;
     }
     long long num;
-    for(int i = 1; i <= 10; i++) {
+    for(int i = 1; i <= 10; ++i) {
         num = 1;
         printf("Степени числа %d от 1 до %lld: ", i, x);
-        for(int j = 1; j <= x; j++) {
+        for(int j = 1; j <= x; ++j) {
             num *= i;
             printf(" %lld", num);
         }
@@ -91,7 +91,7 @@ int fOp(long long x) {
         return InvalidInput;
     }
     unsigned long long res = 1;
-    for(int i = 1; i <= x; i++) {
+    for(int i = 1; i <= x; ++i) {
         res *= i;
     }
     printf("%llu\n", res);
