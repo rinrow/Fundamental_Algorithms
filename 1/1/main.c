@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "include/ArgwParser.h"
 #include "include/Operations.h"
-// #include "include/Status.h"
+#include "include/Status.h"
 
 int main(int argc, char **argw) {
     if(argc != 3) {
