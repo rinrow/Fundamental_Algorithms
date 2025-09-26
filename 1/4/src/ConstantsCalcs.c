@@ -6,7 +6,6 @@
 
 #define MAX_IT_CNT_IF_NO_BIG_NUMS 1000000
 
-// при больших eps cur сбрасывается до 1 т.е 1 / n -> 0
 Status eLimit(long double eps, long double *out) {
     long double prev = 0, cur = 0;
     int n = 0;
