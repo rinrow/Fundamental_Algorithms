@@ -49,11 +49,11 @@ Status getAllSollutions(long double eps, long double vals[3], long double (*sols
                     }
                 } else {
                     long double D = b * b - 4 * a * c;
-                    if(D < 0) {
-                        sols[cnt][3] = 0;
-                    } else if(cmp(D, 0, eps)) {
+                    if(cmp(D, 0, eps)) {
                         sols[cnt][3] = 1;
                         sols[cnt][4] = -b / (2 * a);
+                    } else if(D < 0) {
+                        sols[cnt][3] = 0;
                     } else {
                         D = sqrt(D);
                         sols[cnt][3] = 2;
@@ -76,7 +76,7 @@ Status isMultiple(long double a, long double b, bool* isMul) {
     if(a > __INT32_MAX__ || b > __INT32_MAX__) {
         return LongOverflow;
     }
-    int aInt = floor(a), bInt = floor(b);
+    int aInt = roundl(a), bInt = roundl(b);
     if(!cmp(a, aInt, eps) || !cmp(b, bInt, eps)) {
         return NotInteger;
     }

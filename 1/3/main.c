@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
         return 0;
     }
     char fl;
-    long double vals[4], eps = 1e-9;
+    long double vals[4], eps;
     if (process(parseFlag(argv[1], &fl)) != Ok) {
         return 0;
     }
@@ -36,6 +36,7 @@ int main(int argc, char **argv) {
         if (process(getAllSollutions(vals[0], vals + 1, sols, &n)) != Ok) {
             break;
         }
+        eps = vals[0];
         for(int i = 0; i < n; ++i) {
             printf("Для коэф %Lf %Lf %Lf ", sols[i][0], sols[i][1], sols[i][2]);
             if (isinf(sols[i][3])) {
