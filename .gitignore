@@ -1,2 +1,6 @@
 *.out
 .vscode
+1/5/out_in.txt
+.gitignore
+1/5/in.txt
+1/5/out.txt
