@@ -56,8 +56,9 @@ Status operate(char* buf, long long *mx, int base) {
 }
 
 Status getInBase(long long num, int base, char **out, char *buf) {
-    // для двоичной 64 цифр для других меньше
-    char *ptr = buf + 65;
+    // для двоичной llBitCnt цифр для других меньше
+    int llBitCnt = sizeof(long long) * 8;
+    char *ptr = buf + llBitCnt + 1;
     *ptr = 0;
     bool isNeg = false;
     if(num < 0) {
