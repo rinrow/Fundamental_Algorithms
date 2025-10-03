@@ -6,14 +6,14 @@
 #include "include/Operations.h"
 
 bool isCorrect(char cur, char prev) {
-    if(!isalnum(cur) && cur != ' ' && cur != '\t' && cur != '\n' && cur != EOF) {
+    if(!isalnum(cur) && cur != ' ' && cur != '\t' && cur != '\n' && cur != EOF && cur != '-') {
         return false;
     }
-    return !isalnum(cur) <= prev != '-';
+    return !isalnum(cur) <= (prev != '-');
 }
 
 int main(int argc, char **argv) {
-   if(argc != 3) {
+    if(argc != 3) {
         printf("Некорректное кол-во аргументов\n");
         return 0;
     }
@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
     do {
         cur = getc(toRead);
         if(!isCorrect(cur, prev)) { 
-            printf("Ошибка!!! Файл содержит символы о которых не сказано в ТЗ!!!!\n");
+            printf("1Ошибка!!! Файл содержит символы о которых не сказано в ТЗ!!!!\n");
             break;
         }
         if(ptr - buf >= BUFSIZ - 1) {

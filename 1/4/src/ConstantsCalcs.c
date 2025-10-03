@@ -39,10 +39,6 @@ Status eRow(long double eps, long double *out) {
     return Ok;
 }
 
-Status eEquation(long double eps, long double *out) {
-    *out = exp(1);
-    return Ok;
-}
 
 Status pLimit(long double eps, long double *out) {
     long double cur = 0, prev = 0, nfact = 1, nP2 = 1, n2fact = 1;
@@ -83,10 +79,6 @@ Status pRow(long double eps, long double *out) {
     return Ok;
 }
 
-Status pEquation(long double eps, long double *out) {
-    *out = acos(-1);
-    return Ok;
-}
 
 Status ln2Limit(long double eps, long double *out) {
     long double cur = 0, prev = 0;
@@ -121,10 +113,7 @@ Status ln2Row(long double eps, long double *out) {
     return Ok;
 }
 
-Status ln2Equation(long double eps, long double *out) {
-    *out = log(2);
-    return Ok;
-}
+
 
 Status sq2Limit(long double eps, long double *out) {
     long double prev = 0, cur = -0.5;
@@ -160,10 +149,7 @@ Status sq2Row(long double eps, long double *out) {
     return Ok;
 }
 
-Status sq2Equation(long double eps, long double *out) {
-    *out = powl(2, 0.5L);
-    return Ok;
-}
+
 
 Status gLimit(long double eps, long double *out) {
     long double prev = 0, cur = 0, mul, lnkf;
@@ -250,4 +236,54 @@ Status gEquation(long double eps, long double *out) {
     } while(fabsl(cur - prev) > eps);
     *out = cur;
     return Ok;
+}
+
+// 1. ln(x) = 1 -> f(x) = ln(x) - 1
+long double f1(long double x) { return log(x) - 1; }
+long double df1(long double x) { return 1.0 / x; }
+
+// 2. cos(x) = -1 -> f(x) = cos(x) + 1
+long double f2(long double x) { return cos(x) + 1; }
+long double df2(long double x) { return -sin(x); }
+
+// 3. e^x = 2 -> f(x) = e^x - 2
+long double f3(long double x) { return exp(x) - 2; }
+long double df3(long double x) { return exp(x); }
+
+// 4. x^2 = 2 -> f(x) = x^2 - 2
+long double f4(long double x) { return x * x - 2; }
+long double df4(long double x) { return 2 * x; }
+
+
+Status newton(long double eps, long double x0, long double *res, long double (*f)(long double), long double (*df)(long double)) {
+    long double cur = x0, prev, fx, dfx;
+    int itc = 0;
+    do {
+        prev = cur;
+        fx = f(cur), dfx = df(cur);
+        cur = cur - fx / dfx;
+        ++itc;
+        if(itc > MAX_IT_CNT_IF_NO_BIG_NUMS) {
+            *res = cur;
+            return CannotReachAccur;
+        }
+    } while(fabsl(prev - cur) > eps);
+    *res = cur;
+    return Ok;
+}
+
+Status eEquation(long double eps, long double *out) {
+    return newton(eps, 2.5, out, f1, df1);
+}
+
+Status pEquation(long double eps, long double *out) {
+    return newton(eps, 3, out, f2, df2);
+}
+
+Status ln2Equation(long double eps, long double *out) {
+    return newton(eps, 0.5, out, f3, df3);
+}
+
+Status sq2Equation(long double eps, long double *out) {
+    return newton(eps, 1, out, f4, df4);
 }

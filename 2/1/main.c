@@ -110,7 +110,7 @@ int main() {
         printf("Ошибка выделения памяти\n");
         return 0;
     }
-    operate(out, 2, n, 0.2, 0.5);
+    operate(out, 3, n, 0.3, 0.5);
     for(int i = 0; i < n; ++i) {
         printf("число по номеру %d, %s имеет конеч предс\n", i + 1, out[i] ? "": "не");
     }
