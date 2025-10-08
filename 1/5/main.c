@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
             fclose(toRead);
             return 0;
         }
-        if(strlen(argv[2]) >= BUFSIZ) {
+        if(my_strlen(argv[2]) >= BUFSIZ) {
             printf("Длина введенного файла слишком большая. Название не помещается в буфер!\n");
             fclose(toRead);
             return 0;
@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
         // идем справа налево когда находим первый / перед ним дописываем out_
         char buf[BUFSIZ];
         strcpy(buf, argv[2]);
-        int pathLen = strlen(buf), nameSt = 0;
+        int pathLen = my_strlen(buf), nameSt = 0;
         for(int i = pathLen - 1; i >= 0; --i) {
             if(buf[i] == '/') {
                 nameSt = i + 1;

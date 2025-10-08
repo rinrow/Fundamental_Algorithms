@@ -1,7 +1,7 @@
 #include "../include/ErrorMsgs.h"
 
 #if defined(__APPLE__)
-const char* const error_messages[] = {
+const char* const errors[] = {
     [0] = "Success",
     [EPERM] = "Operation not permitted",
     [ENOENT] = "No such file or directory",
@@ -112,7 +112,7 @@ const char* const error_messages[] = {
 };
 
 #elif defined(__linux__)
-const char* const error_messages[] = {
+const char* const errors[] = {
     [0] = "Success",
     [EPERM] = "Operation not permitted",
     [ENOENT] = "No such file or directory",
