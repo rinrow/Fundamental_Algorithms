@@ -254,8 +254,8 @@ long double df3(long double x) { return exp(x); }
 long double f4(long double x) { return x * x - 2; }
 long double df4(long double x) { return 2 * x; }
 
-
-Status newton(long double eps, long double x0, long double *res, long double (*f)(long double), long double (*df)(long double)) {
+Status newton(long double eps, long double x0, long double *res, 
+        long double (*f)(long double), long double (*df)(long double)) {
     long double cur = x0, prev, fx, dfx;
     int itc = 0;
     do {

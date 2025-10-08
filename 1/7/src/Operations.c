@@ -30,11 +30,11 @@ Status operate(char* buf, FILE* out) {
     ++mx;
     len = i;
     i = st;
-    if(buf[0] == '-') {
-        fputc('-', out);
-    }
     while(buf[i] == '0') { 
         ++i;
+    }
+    if(buf[0] == '-' && buf[i]) {
+        fputc('-', out);
     }
     if(!buf[i]) { // число 0
         fputc('0', out);
