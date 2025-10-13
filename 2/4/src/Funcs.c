@@ -58,7 +58,6 @@ Status fromRoman(const char *roman, int *res) {
 }
 
 Status Ro(const char* buf, int *rd, va_list l) {
-    printf("in Ro\n");
     int mxCnt = 30;
     char romstr[mxCnt], *ptr = romstr;
     int len = 0, *res = va_arg(l, int *);
@@ -74,14 +73,10 @@ Status Ro(const char* buf, int *rd, va_list l) {
     fromRoman(romstr, res);
     char tmp[mxCnt];
     toRroman(tmp, *res);
-    printf("Num is %d\n", *res);
-    printf("tmp is %s\n", tmp);
-    printf("romstr is %s\n", romstr);
     if(strcmp(romstr, tmp)) {
         *res = -1;
         return CannotBeRoman;
     };
-    printf("End\n");
     return Ok;
 }
 
@@ -116,7 +111,6 @@ Status Zr(const char* buf, int *rd, va_list l) {
     for(i = 0; i < len; ++i) {
         *res += fib[i] * (tmp[i] == '1');
     }
-    printf("Zc end\n");
     return Ok;
 }
 
@@ -187,7 +181,6 @@ Status cvMain(const char* buf, int *rd, va_list l, bool up) {
         ++len;
     }
     *ptr = 0;
-    printf("cvMain: num = %s\n", num);
     if(len == 20) {
         return Overflow;
     }

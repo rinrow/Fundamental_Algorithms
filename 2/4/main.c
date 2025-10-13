@@ -11,7 +11,7 @@ int main() {
     res = oversscanf("akdl akdl akdl", "%s %s %s", s, ss, sss);
     printf("%s %s %s\n", s, ss, sss); 
 
-    res = oversscanf("II XI IIIX VV MX XXXXX", "%Ro %Ro %Ro %Ro %Ro %Ro", &a, &b, &c, &d, &e, &f);
+    res = oversscanf("II XI IX X MX L jskdhvfkjsdhk", "%Ro %Ro %Ro %Ro %Ro %Ro", &a, &b, &c, &d, &e, &f);
     printf("%d %d %d %d %d %d %d\n", res, a, b, c, d, e, f);       
     return 0;
 }
