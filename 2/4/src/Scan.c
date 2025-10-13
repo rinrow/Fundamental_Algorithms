@@ -80,6 +80,7 @@ int overformat(const char *str, char *format, va_list l) {
         str += readedFromStr;
         ++out;
     }
+    va_end(l);
     return out;
 }
 
