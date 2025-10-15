@@ -94,7 +94,7 @@ Status Zr(const char* buf, int *rd, va_list l) {
         ++len;
     }
     if(len == maxCnt) {
-        return Overflow;
+        return IntOverflow;
     }
     *rd = len;
     --len; // не читаем терминирующую единицу
@@ -158,7 +158,7 @@ Status fromBase(int *res, char *n, int base, bool up) {
         // num * mx + c >= longmx
         // num >= (longmx - c) / mx
         if(num >= (__INT_MAX__ - getNum(n[i])) / base) {
-            return Overflow;
+            return IntOverflow;
         }
         num = num * base + getNum(n[i]);
     }
@@ -182,7 +182,7 @@ Status cvMain(const char* buf, int *rd, va_list l, bool up) {
     }
     *ptr = 0;
     if(len == 20) {
-        return Overflow;
+        return IntOverflow;
     }
     *rd = len;
     return fromBase(res, num, base, up);

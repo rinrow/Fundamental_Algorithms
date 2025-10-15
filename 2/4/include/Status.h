@@ -12,7 +12,8 @@ typedef enum {
     LongOverflow,
     ShouldBeUpper,
     ShouldBeLower,
-    Overflow,
+    IntOverflow,
+    BufferOverflow,
     UncorrectZec,
     NotInFormat
 } Status;
