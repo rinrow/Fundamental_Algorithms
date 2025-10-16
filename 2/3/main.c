@@ -134,7 +134,7 @@ void test_memory_dump() {
     char buffer[500];
     
     // %mi - знаковый int
-    int test_int = 1;
+    int test_int = -1;
     oversprintf(buffer, "%mi", test_int);
     printf("int 1 dump: %s\n", buffer);
     // На little-endian: 00000001 00000000 00000000 00000000
@@ -145,7 +145,7 @@ void test_memory_dump() {
     printf("unsigned int 1 dump: %s\n", buffer);
     
     // %mf - float
-    float test_float = 1.0f;
+    float test_float = 3.14f;
     oversprintf(buffer, "%mf", test_float);
     printf("float 1.0 dump: %s\n", buffer);
     
