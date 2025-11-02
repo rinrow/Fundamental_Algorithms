@@ -1,0 +1,1 @@
+char* toBase(int n, int r, char* buf);

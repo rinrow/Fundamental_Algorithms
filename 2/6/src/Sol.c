@@ -138,10 +138,10 @@ void SearchGroup(Student **st, int len, FILE* out) {
 }
 
 Status Search(Student **st, int len, FILE* out) {
-    printf("Для параметра поиска по id введите 0:\n");
-    printf("Для параметра поиска по имени введите 1:\n");
-    printf("Для параметра поиска по фамилии введите 2:\n");
-    printf("Для параметра поиска по группе введите 3:\n");
+    printf("Для поиска по id введите 0:\n");
+    printf("Для поиска по имени введите 1:\n");
+    printf("Для поиска по фамилии введите 2:\n");
+    printf("Для поиска по группе введите 3:\n");
     int i;
     scanf("%d", &i);
     while(i < 0 || i > 3) {
