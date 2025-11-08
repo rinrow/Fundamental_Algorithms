@@ -1,0 +1,21 @@
+Livers.txt 
+3 21 Rybin Vladimir Victorovich 6 2 2007 M 1000.0 
+4 33 Makarova Svetlana 24 11 1982 W 3850.95 
+2 4 Kuznetsova Maria 30 1 1995 W 2800.00 0 GHGHG
+6
+5 0
+2 -1 Orlov ~ -1 -1 -1 ~ 3000.15
+0 Huev
+5 0
+6
+5 0
+2 -1 Orlov ~ -1 -1 -1 ~ 3000.15
+3 10
+5 0
+6
+5 0
+6
+5 0
+6
+5 0
+0
