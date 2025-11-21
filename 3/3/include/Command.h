@@ -9,21 +9,21 @@ typedef union {
     void *ptrData;
 } CommandData;
 
-typedef void (*comdFunc)(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st);
+typedef void (*comdFunc)(int livN, CommandData *d, LinkedList *livers, LinkedList *st);
 
 typedef struct {
     comdFunc f;
     CommandData *data;
-    Node *target;
+    int target;
 } Command;
 
-void editName(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st);
-void editSurname(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st);
-void editPatr(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st);
-void editBirthDay(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st);
-void editBirthMonth(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st);
-void editBirthYear(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st);
-void editSex(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st);
-void editAvSal(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st);
-void addLiverCommand(Node* livN, CommandData* d, LinkedList *livers, LinkedList *st);
-void delLiverCommand(Node* livN, CommandData* d, LinkedList *livers, LinkedList *st);
+void editName(int livN, CommandData *d, LinkedList *livers, LinkedList *st);
+void editSurname(int livN, CommandData *d, LinkedList *livers, LinkedList *st);
+void editPatr(int livN, CommandData *d, LinkedList *livers, LinkedList *st);
+void editBirthDay(int livN, CommandData *d, LinkedList *livers, LinkedList *st);
+void editBirthMonth(int livN, CommandData *d, LinkedList *livers, LinkedList *st);
+void editBirthYear(int livN, CommandData *d, LinkedList *livers, LinkedList *st);
+void editSex(int livN, CommandData *d, LinkedList *livers, LinkedList *st);
+void editAvSal(int livN, CommandData *d, LinkedList *livers, LinkedList *st);
+void addLiverCommand(int livN, CommandData* d, LinkedList *livers, LinkedList *st);
+void delLiverCommand(int livN, CommandData* d, LinkedList *livers, LinkedList *st);

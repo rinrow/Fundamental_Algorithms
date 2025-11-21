@@ -5,6 +5,11 @@
 #include <string.h>
 #include <math.h>
 
+void clearInBuffer() {
+    int c; 
+    while((c = getchar()) != '\n' && c != EOF);
+}
+
 void printLiv(FILE* stream, Liver* l) {
     fprintf(stream, "%d %s %s %s %d %d %d %c %f\n", l->id, 
             l->name, l->surname, l->patronymic, l->birthDay, l->birthMonth, 
@@ -15,15 +20,12 @@ void deleteLiver(LinkedList* livers, LinkedList* st) {
     printf("Сначало нужно найти жителя\n");
     printSearchInfo();
     Liver *tar = readLiver(stdin);
-    // printLiv(stdout, tar);
-    Node* res = findLiverNode(livers, tar);
+    int res = findLiverInd(livers, tar);
     free(tar);
-    if(!res) {
+    if(res == -1) {
         printf("Не найден подходящий житель\n");
         return;
     }
-    // CommandData *data = (CommandData *)malloc(sizeof(CommandData));
-    // data->ptrData = res;
     delLiverCommand(res, NULL, livers, st);
     printf("Успешно удалено!\n");
 }
@@ -43,7 +45,7 @@ void addLiver(LinkedList* livers, LinkedList* st) {
         return;
     }
     data->ptrData = tmp;
-    addLiverCommand(NULL, data, livers, st);
+    addLiverCommand(-1, data, livers, st);
     printf("Житель добавлен!\n");
 }
 
@@ -54,10 +56,9 @@ void changeLiver(LinkedList* livers, LinkedList* st) {
     printf("Сначало нужно найти жителя\n");
     printSearchInfo();
     Liver *tar = readLiver(stdin);
-    // printLiv(stdout, tar);
-    Node* res = findLiverNode(livers, tar);
+    int res = findLiverInd(livers, tar);
     free(tar);
-    if(!res) {
+    if(res == -1) {
         printf("Не найден подходящий житель\n");
         return;
     }
@@ -70,10 +71,11 @@ void changeLiver(LinkedList* livers, LinkedList* st) {
     }
     data->ptrData = NULL;
     printChangeInfo();
-    scanf("%d", &ind);
-    if(ind < 0 || ind > 7) {
+    int readed = scanf("%d", &ind);
+    if(ind < 0 || ind > 7 || readed != 1) {
         printf("Некорректная операция\n");
         free(data);
+        clearInBuffer();
         return;
     }
     printf("Введите значение для этого поля:\n");
@@ -117,9 +119,6 @@ void printChangeInfo() {
 }
 
 int isEqLivers(Liver* a, Liver* b) {
-    // printf("Comparing \n");
-    // printLiv(stdout, a);
-    // printLiv(stdout, b);
     int equal = 1;
     if(a->id != -1) {
         equal = equal && a->id == b->id;
@@ -131,7 +130,6 @@ int isEqLivers(Liver* a, Liver* b) {
         equal = equal && !strcmp(a->surname, b->surname);
     }
     if(strcmp(a->patronymic, "~")) {
-        // printf("patr = == %s\n", b->patronymic);
         equal = equal && !strcmp(a->patronymic, b->patronymic);
     }
     if(a->birthDay != -1) {
@@ -146,39 +144,42 @@ int isEqLivers(Liver* a, Liver* b) {
     if(a->sex != '~') {
         equal = equal && a->sex == b->sex;
     }
-    if(fabs(a->avSal + 1) <= 1e7) {
-        equal = equal && fabs((a->avSal - b->avSal)) <= 1e7;
+    if(fabs(a->avSal + 1) > 1e-7) {
+        equal = equal && fabs(a->avSal - b->avSal) <= 1e-7;
     }
     return equal;
 }
 
-Node* findLiverNode(LinkedList *livers, Liver* tar) {
+int findLiverInd(LinkedList *livers, Liver* tar) {
     if(!tar) {
-        return NULL;
+        return -1;
     }
     Node* cur = livers->head;
+    int res = 0;
     // Node* res = NULL;
     while(cur) {
         if(isEqLivers(tar, cur->data)) {
-            // printf("Found!\n");
-            // res = (Node *)cur;
             break;
         }
         cur = cur->next;
+        res++;
     }
-    return cur;
+    if(res >= livers->size) { 
+        res = -1;
+    }
+    return res;
 }
 
 void searchLiver(LinkedList* livers, LinkedList* st) {
     printSearchInfo();
     Liver *tar = readLiver(stdin);
     printLiv(stdout, tar);
-    Node* res = findLiverNode(livers, tar);
-    if(!res) {
+    int res = findLiverInd(livers, tar);
+    if(res == -1) {
         printf("Не найден житель соответствующий параметрам!\n");
     } else {
         printf("Найден житель соответствующий параметрам!\n");
-        printLiv(stdout, (Liver *)res->data);
+        printLiv(stdout, (Liver *)get_at_list(livers, res));
     }
 }
 
@@ -186,32 +187,18 @@ void undo(LinkedList* livers, LinkedList* st) {
     if(!st->size) { 
         return;
     }
-    printf("stack sz = %d\n", st->size);
     Command *com = (Command *)pop_stack(st);
     com->f(com->target, com->data, livers, st);
     Command* newCom = (Command *)pop_stack(st); // вновь вызванная команда положит себя в стек
-    // // undo for change
-    // free(com->data);
-    // free(com);
-    // free(newCom);
-    // // undo which calls add 
-    // free(com->data);
-    // free(com);
-    // free(newCom);
-    // // undo which calls delete
-    // free(com);
-    // free(newCom->data);
-    // free(newCom);
-    // Summary
     if(!com->data) {
         // если delete очищать не надо
         free(newCom->data->ptrData);
     } 
-    if(com->target) {
+    if(com->target != -1) {
         // если add очищать не надо
         free(com->data);
     } 
-    if(!com->data || !com->target) {
+    if(!com->data || com->target == -1) {
         // если change очищать не надо
         free(newCom->data);
     }
@@ -220,24 +207,29 @@ void undo(LinkedList* livers, LinkedList* st) {
 }
 
 void undoHalfN(LinkedList* livers, LinkedList* st) {
-    undo(livers, st);
+    int n = st->size;
+    for(int i = 0; i < n / 2; i++) {
+        undo(livers, st);
+    }
+    freeStack(st);
 }
 
 void printLivers(LinkedList* livers, LinkedList* st) {
     Node* cur = livers->head;
-    int num;
-    printf("Для вывода жителей в файл, введите 1, а для вывода в консоль любое другое число\n");
-    scanf("%d", &num);
+    int num = 0;
     FILE* f = stdout;
+    printf("Для печати в файл введите 1, иначе любую другую цифру\n");
+    scanf("%d", &num);
     char buf[200];
     if(num == 1) {
         printf("Введите путь к файлу\n");
         scanf("%s", buf);
-        f = fopen(buf, "w");
+        f = fopen(buf, "a");
         if(!f) {
             printf("Не удалось открыть файл\n");
             return;
         }
+        fprintf(f, "=======================\n");
     }
     while(cur) {
         printLiv(f, (Liver *)(cur->data));
@@ -266,10 +258,6 @@ Liver* readLiver(FILE* stream) {
     }
     fscanf(stream, " %d %d %c %f", &(l->birthMonth), 
         &(l->birthYear), &(l->sex), &(l->avSal));
-
-    // printf("Readed liver\n");
-    // printLiv(stdout, l);
-    // printf("\n");
     return l;
 }  
 
@@ -278,12 +266,5 @@ void readAllLivers(FILE* stream, LinkedList* list) {
     while(cur = readLiver(stream)) {
         if(!cur) break;
         insertLiver(list, cur);
-        // printf("SZ list = %d", list->size);
-        // break;
     }
-    // for(int i = 0; i < 3; i++) {
-    //     cur = readLiver(stream);
-    //     insertLiver(cur, list);
-    //     // printf("SZ list = %d", list->size);
-    // }
 }

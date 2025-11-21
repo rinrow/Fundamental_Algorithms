@@ -1,14 +1,15 @@
 #include "../include/Command.h"
 #include <string.h>
+#include <stdio.h>
 
-void initCom(Command* c, CommandData *d, comdFunc f, Node *n) {
+void initCom(Command* c, CommandData *d, comdFunc f, int tar) {
     c->f = f;
     c->data = d;
-    c->target = n;
+    c->target = tar;
 }
 
-void editName(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st) {
-    Liver *cur = (Liver *)(livN->data);
+void editName(int livN, CommandData *d, LinkedList *livers, LinkedList *st) {
+    Liver *cur = (Liver *)get_at_list(livers, livN);
     char buf[50];
     strcpy(buf, cur->name);
     strcpy(cur->name, d->strData);
@@ -21,8 +22,8 @@ void editName(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st) {
     push_stack(st, (void *)com);
 }
 
-void editSurname(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st) {
-    Liver *cur = (Liver *)(livN->data);
+void editSurname(int livN, CommandData *d, LinkedList *livers, LinkedList *st) {
+    Liver *cur = (Liver *)get_at_list(livers, livN);
     char buf[50];
     strcpy(buf, cur->surname);
     strcpy(cur->surname, d->strData);
@@ -35,8 +36,8 @@ void editSurname(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st)
     push_stack(st, (void *)com);
 }
 
-void editPatr(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st) {
-    Liver *cur = (Liver *)(livN->data);
+void editPatr(int livN, CommandData *d, LinkedList *livers, LinkedList *st) {
+    Liver *cur = (Liver *)get_at_list(livers, livN);
     char buf[50];
     strcpy(buf, cur->patronymic);
     strcpy(cur->patronymic, d->strData);
@@ -49,9 +50,8 @@ void editPatr(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st) {
     push_stack(st, (void *)com);
 }
 
-void editBirthDay(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st) {
-    printf("in editBirthDay\n");
-    Liver *cur = (Liver *)(livN->data);
+void editBirthDay(int livN, CommandData *d, LinkedList *livers, LinkedList *st) {
+    Liver *cur = (Liver *)get_at_list(livers, livN);
     int tmp = cur->birthDay; 
     cur->birthDay = d->intData;
     d->intData = tmp;
@@ -60,12 +60,11 @@ void editBirthDay(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st
         return;
     }
     initCom(com, d, editBirthDay, livN);
-    printf("Created command and pushed");
     push_stack(st, (void *)com);
 }
 
-void editBirthMonth(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st) {
-    Liver *cur = (Liver *)(livN->data);
+void editBirthMonth(int livN, CommandData *d, LinkedList *livers, LinkedList *st) {
+    Liver *cur = (Liver *)get_at_list(livers, livN);
     int tmp = cur->birthMonth; 
     cur->birthMonth = d->intData;
     d->intData = tmp;
@@ -77,8 +76,8 @@ void editBirthMonth(Node* livN, CommandData *d, LinkedList *livers, LinkedList *
     push_stack(st, (void *)com);
 }
 
-void editBirthYear(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st) {
-    Liver *cur = (Liver *)(livN->data);
+void editBirthYear(int livN, CommandData *d, LinkedList *livers, LinkedList *st) {
+    Liver *cur = (Liver *)get_at_list(livers, livN);
     int tmp = cur->birthYear; 
     cur->birthYear = d->intData;
     d->intData = tmp;
@@ -90,8 +89,8 @@ void editBirthYear(Node* livN, CommandData *d, LinkedList *livers, LinkedList *s
     push_stack(st, (void *)com);
 }
 
-void editSex(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st) {
-    Liver *cur = (Liver *)(livN->data);
+void editSex(int livN, CommandData *d, LinkedList *livers, LinkedList *st) {
+    Liver *cur = (Liver *)get_at_list(livers, livN);
     char tmp = cur->sex; 
     cur->sex = d->strData[0];
     d->strData[0] = tmp;
@@ -103,8 +102,8 @@ void editSex(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st) {
     push_stack(st, (void *)com);
 }
 
-void editAvSal(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st) {
-    Liver *cur = (Liver *)(livN->data);
+void editAvSal(int livN, CommandData *d, LinkedList *livers, LinkedList *st) {
+    Liver *cur = (Liver *)get_at_list(livers, livN);
     float tmp = cur->avSal;
     cur->avSal = d->floatData;
     d->floatData = tmp;
@@ -117,60 +116,29 @@ void editAvSal(Node* livN, CommandData *d, LinkedList *livers, LinkedList *st) {
 }
 #include <stdio.h>
 
-void addLiverCommand(Node* livN, CommandData* d, LinkedList *livers, LinkedList *st) {
-    printf("In add\n");
-    printf("In smth\n");
-    printf("l adress = %p\n", d);
-    int ind = insertLiver(livers, d->ptrData);
+void addLiverCommand(int livN, CommandData* d, LinkedList *livers, LinkedList *st) {
+    livN = insertLiver(livers, d->ptrData);
     free(d);
-    printf("Insertet at index = %d\n", ind);
-    livN = livers->head;
-    while(ind--) {
-        livN = livN->next;
-    }
-    printf("livN->data->name = %s\n", ((Liver *)(livN->data))->name);
     Command *com = (Command *)malloc(sizeof(Command));
     if(!com) {
         return;
     }
     initCom(com, NULL, delLiverCommand, livN);
-    // com->f = delLiverCommand;
-    // com->target = livN;
-    // com->data = NULL;
     push_stack(st, com);
 }
 
-void delLiverCommand(Node* livN, CommandData* d, LinkedList *livers, LinkedList *st) {
-    printf("In del\n");
-    printf("livN = %p\n", livN);
-    printf("livN->data->name = %s\n", ((Liver *)(livN->data))->name);
+void delLiverCommand(int livN, CommandData* d, LinkedList *livers, LinkedList *st) {
     CommandData *data = (CommandData *)malloc(sizeof(CommandData));
     if(!data) {
         return;
     }
-    data->ptrData = livN->data;
-    if(!livN->prev) {
-        printf("livN->pre\n");
-        pop_front_list(livers);
-    }
-    else if(!livN->next) {
-        printf("livN->next\n");
-        pop_back_list(livers);
-    } else {
-        livN->prev->next = livN->next;
-        livN->next->prev = livN->prev;
-        livers->size--;
-        free(livN);
-    }
-    printf("Creating New commands\n");
+    data->ptrData = get_at_list(livers, livN);
+    delete_at_list(livers, livN);
     Command *com = (Command *)malloc(sizeof(Command));
     if(!com) {
         return;
     }
-    initCom(com, data, addLiverCommand, NULL);
-    // com->f = addLiverCommand;
-    // com->data = data;
-    // com->target = NULL;
+    initCom(com, data, addLiverCommand, -1);
     push_stack(st, com);
 }
 

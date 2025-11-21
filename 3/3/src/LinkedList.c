@@ -114,7 +114,6 @@ void insert_at_list(LinkedList *list, size_t index, void* value) {
     if(!list) {
         return;
     }
-    printf("%d %d\n", index, list->size);
     if(index == list->size) {
         push_back_list(list, value);
         return;
@@ -132,13 +131,8 @@ void insert_at_list(LinkedList *list, size_t index, void* value) {
     }
     new->next = NULL;
     new->prev = NULL;
-    printf("%d %d\n", index, list->size);
     while(index--) {
         cur = cur->next;
-        printf("%s\n", ((Liver *)(cur->data))->name);
-    }
-    if(!cur) {
-        printf("NULL\n");
     }
     new->next = cur;
     new->prev = cur->prev;
@@ -259,7 +253,7 @@ void freeStack(LinkedList *st) {
         tmp = (Command *)st->tail->data;
         if(tmp->data) {
             // ptrData только у add
-            if(!tmp->target) {
+            if(tmp->target == -1) {
                 free(tmp->data->ptrData);
             }
             free(tmp->data);

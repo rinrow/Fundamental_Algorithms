@@ -20,9 +20,7 @@ void printInputInfo() {
 
 typedef void(*operFunc)(LinkedList* livers, LinkedList* st);
 
-void empty(LinkedList* livers, LinkedList* st) {
-    printf("Calling..\n");
-}
+void empty(LinkedList* livers, LinkedList* st) {}
 
 void start() {
     FILE* in;
@@ -34,25 +32,21 @@ void start() {
         printf("не удалось открыть файл\n");
         return;
     }
-    int oper;
+    int oper = -1, readed;
     LinkedList livers = create_list(), st = create_list();
     readAllLivers(in, &livers);
     printf("Жители из файла прочитаны\n");
     operFunc funcs[] = {empty, searchLiver, changeLiver, deleteLiver, addLiver, printLivers, undoHalfN};
     do {    
         printInputInfo();
-        scanf("%d", &oper);
-        printf("oper = %d\n", oper);
-        if(oper < 0 || oper > 6) {
+        readed = scanf("%d", &oper);
+        if(readed != 1 || oper < 0 || oper > 6) {
             printf("Нет такой команды!\n");
+            clearInBuffer(); // в случае если на вход поступила строка, нужно сброс буфер
             continue;
         }
         funcs[oper](&livers, &st);
-        printf("After\n");
     } while(oper);
-    printf("Exited\n");
-    printf("%d\n", st.size);
-    printf("%d\n", livers.size);
     freeStack(&st);
     delete_list(&livers);
     fclose(in);
